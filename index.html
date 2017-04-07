@@ -5,7 +5,6 @@
 
 	<meta charset="UTF-8">
         <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="setOps.js"></script>
 	<link rel="shortcut icon" type="image/png" href="favicon.png">
@@ -19,7 +18,7 @@
 
 <body>
 	
-	<div id="bottom">
+		<div id="bottom">
 	
 	<div id="botleft">
 	<br></br>
@@ -127,11 +126,16 @@
 		<br></br>
 		<label for="clueL"> Number of clues: <input type="number" name="cluei" id = "clueid"/></label>
 		<br></br>
-		<button type="button" id="solveS" onclick="Call_SolveSudoku()">Generate Sudoku</button>
-		<br></br>
+		<form>
+			<button type="button" id="genS" onclick="Gen_Sudoku()">Generate Sudoku</button>
+			<button type="button" id="printS" onclick="PDF_Sudoku()">Save Sudoku</button>
+			<button type="button" id="solveS" onclick="Redirect()">Open Solver</button>
+		</form>
+		<br>
 		<div>Enter number of clues (given numbers) and press "Generate Sudoku".</div>
 		<br>
-		<div id="timemsg"></div> 
+		<div id="timemsg"></div>
+
 	</div>
 	
 	</div>
@@ -143,7 +147,7 @@
 <script type="text/javascript">
 
 var allNos=[1,2,3,4,5,6,7,8,9],emptycells,table=document.getElementById("table"),gAH=[],indexH=[],affcells=[],levelindex=[],level=-1,selrow,selcol,index2,pNos=[],iH=[],srH=[],scH=[],so=setOps,stop=0,t0,t1,cb=0,rs1,rs,clues,box=[[1,2,9,11,18,19],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],[27,28,29,36,37,38,45,46,47],[31,32,39,41,48,49],[33,34,35,42,43,44,51,52,53],[54,55,56,63,64,65,72,73,74],[57,58,59,66,67,68,75,76,77],[61,62,69,71,78,79]],minIs=[0,0,0,3,3,3,6,6,6],maxIs=[2,2,2,5,5,5,8,
-8,8],minJs=[0,3,6,0,3,6,0,3,6],maxJs=[2,5,8,2,5,8,2,5,8];function Call_SolveSudoku(){clues=document.getElementById("clueid").value;""==clues||17>Number(clues)||72<Number(clues)?alert("Clues must be greater than 16 and less than 73"):SolveSudoku()}
+8,8],minJs=[0,3,6,0,3,6,0,3,6],maxJs=[2,5,8,2,5,8,2,5,8];var str = "Downloaded from https://rishibawdekar.github.io/sudoku-generator-by-rishi-bawdekar at ";function Gen_Sudoku(){clues=document.getElementById("clueid").value;""==clues||17>Number(clues)||72<Number(clues)?alert("Clues must be greater than 16 and less than 73"):SolveSudoku()}
 function SolveSudoku(){if(1!=stop){for(var a=[],d=[],e=[],f=0,h=[],k=Array(8),g=0;8>=g;g++)k[g]=Array(8);for(g=0;8>=g;g++)for(j=0;8>=j;j++)if(1==table.rows[g].cells[j].innerHTML.length)k[g][j]=Number(table.rows[g].cells[j].innerHTML),table.rows[g].cells[j].style.color="red",f++;else{table.rows[g].cells[j].style.color="black";var l=SearchRows(j),n=SearchCols(g),m=SearchBox(g,j),l=so.union(l,n),l=so.union(l,m),l=so.difference(allNos,l);k[g][j]=l;a.push(g);d.push(j);e.push(l);h.push(l.length)}emptycells=
 81-f;Print(k);f=Array.min(h);1==f&&SolveSudoku();if(1==CheckDigits(k)||0==f){if(1==stop)return 1;0<=level&&(g=indexH[level][2],table.rows[indexH[level][0]].cells[indexH[level][1]].innerHTML==g[g.length-1]?(lia=GetLevel(level,indexH,gAH),level=lia[0],levelindex=lia[1],gAH=lia[2],selrow=lia[3],selcol=lia[4]):levelindex=indexH[level],Print(gAH[level]),g=levelindex[0],l=levelindex[1],m=levelindex[2],n=m.indexOf(levelindex[3]),m.splice(n,1),1==m.length&&(rs1=m[0]),table.rows[g].cells[l].innerHTML=rs1,
 levelindex[3]=rs1);0>=level&&(level=-1,indexH=[],gAH=[],iH.splice(-1,1),srH.splice(-1,1),scH.splice(-1,1));SolveSudoku()}if(2<=f&&9>=f){if(1==stop)return 1;gAH.push(k);0>level?(index2=Math.floor(Math.random()*h.length),iH.push(index2),selrow=a[index2],selcol=d[index2],srH.push(selrow),scH.push(selcol),l=Math.floor(Math.random()*e[index2].length),indexH.push([a[index2],d[index2],e[index2],e[index2][l]]),k[a[index2]][d[index2]]=e[index2][l],table.rows[a[index2]].cells[d[index2]].innerHTML=e[index2][l]):
@@ -158,7 +162,8 @@ g.push(Number(table.rows[bi].cells[bj].innerHTML));return g}function Print(a){fo
 function CheckDigits(a){var d=0;for(row=0;8>=row;row++){NosInRow=[];for(col=0;8>=col;col++){var e=a[row][col];void 0===e.length&&NosInRow.push(e)}1==HasDuplicate(NosInRow)&&(d=1)}for(col=0;8>=col;col++){NosInCol=[];for(row=0;8>=row;row++)e=a[row][col],void 0===e.length&&NosInCol.push(e);1==HasDuplicate(NosInCol)&&(d=1)}for(it=0;8>=it;it++)for(row=minIs[it];row<=maxIs[it];row++){NosInBox=[];for(col=minJs[it];col<=maxJs[it];col++)e=a[row][col],void 0===e.length&&NosInBox.push(e);1==HasDuplicate(NosInBox)&&
 (d=1)}return d}function HasDuplicate(a){a=a.sort();var d=0;for(ai=0;ai<a.length-1;ai++)a[ai+1]==a[ai]&&(d=1);return d}
 function KeepClues(a){for(di=0;9>di;di++)table.rows[di].cells[di].innerHTML="";a=81-Number(a)-9;var d=Math.floor(a/9);a%=9;for(loop=0;8>=loop;loop++){for(var e=box[loop],f=[];f.length<d;){var h=Math.floor(Math.random()*e.length);-1<f.indexOf(h)||(f[f.length]=h)}for(di=0;di<f.length;di++){var h=e[f[di]],k=h%9;table.rows[(h-k)/9].cells[k].innerHTML=""}}for(;0!=a;){d=maxIs[a-1];e=minJs[a-1];f=maxJs[a-1];h=0;for(ib=minIs[a-1];ib<=d;ib++)for(jb=e;jb<=f;jb++)1!=h&&""!=table.rows[ib].cells[jb].innerHTML&&
-(table.rows[ib].cells[jb].innerHTML="",h++);a--}};
+(table.rows[ib].cells[jb].innerHTML="",h++);a--}};function PDF_Sudoku(){tdate=new Date;var a=new jsPDF("p","mm","a4"),b=document.getElementById("table"),b=a.autoTableHtmlToJson(b);a.autoTable(b.columns,b.data,{addPageContent:function(b){a.setFontSize(40);a.setTextColor(0);a.setFontStyle("helvetica");a.text("Sudoku",84,22);a.setFontSize(8);a.text(str+tdate,b.settings.margin.left,a.internal.pageSize.height-10)},margin:{top:30}});gM=tdate.getMonth()+1;gM=10>gM?"0"+gM:gM.toString();gD=tdate.getDate();gD=10>gD?"0"+gD:gD.toString();gH=tdate.getHours();
+gH=10>gH?"0"+gH:gH.toString();gMn=tdate.getMinutes();gMn=10>gMn?"0"+gMn:gMn.toString();gS=tdate.getSeconds();gS=10>gS?"0"+gS:gS.toString();gY=tdate.getFullYear().toString();date=gY+gM+gD+"_"+gH+gMn+gS;a.save(date+"_sudoku.pdf")}function Redirect(){window.open("https://rishibawdekar.github.io/sudoku-solver-by-rishi-bawdekar");}
 	
 </script>
 
